@@ -1,6 +1,5 @@
 import * as L from './lang'
-import { Token } from './common'
-
+import { Token } from './common.js'
 
 type ParserState = { index: number };
 
@@ -77,12 +76,6 @@ function parseExpHelper(state: ParserState, src: Token[]): L.Exp {
             let ret4 = L.and(e7,e8);
             chomp(state, src, ")");
             return ret4;
-          case "!":
-            chomp(state, src, "!");
-            let e9: L.Exp = parseExpHelper(state, src);
-            let ret5 = L.neg(e9);
-            chomp(state, src, ")");
-            return ret5;
           case "if":
             chomp(state, src, "if");
             let e10: L.Exp = parseExpHelper(state, src);
