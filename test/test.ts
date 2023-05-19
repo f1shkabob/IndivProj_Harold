@@ -53,16 +53,44 @@ const prog5=
   (print (field r y))`
   
   const prog6 = 
-  `(define dur
-    (union variant1 (10 + 10)))
-  (print dur))`
+  `(define d
+    (union variant1 10))
+  (print d)`
 
 
 const prog7 = 
   `(define b
     (union variant2 44))
-  (print b))`
+  (print b)`
 
+  const prog8 = 
+  `(define x 1)
+  (define y 2)
+  (assign x (+ x y))
+  (assign y (* x y))
+  (print x)
+  (print y)`
+
+  const prog9 =
+  `(define ans 0)
+  (define sum
+    (lambda n Nat
+      (if (zero? n)
+          0
+          (+ n (sum (- n 1))))))
+      (assign ans (sum 10))
+  (print ans)`
+
+  const prog10 = `
+  (define double
+    (lambda x Nat (* x 2)))
+    (print (double 5))`
+
+    const prog11 = 
+    `(define boo
+      (lambda w Nat
+        (union variant3 w)))
+    (print (boo 8))`
 
 describe('testerinos', () => {
   test('prog1', () => {
@@ -85,12 +113,29 @@ describe('testerinos', () => {
   })
 
   test('prog6', () => {
-    expect(compileAndInterpret(prog6, true)).toStrictEqual(['variant1', '20'])
+    expect(compileAndInterpret(prog6, true)).toStrictEqual(['variant1, 10'])
   })
 
   test('prog7', () => {
-    expect(compileAndInterpret(prog7, true)).toStrictEqual(['variant2', '44'])
+    expect(compileAndInterpret(prog7, true)).toStrictEqual(['variant2, 44'])
   })
 
+  test('prog8', () => {
+    expect(compileAndInterpret(prog8, true)).toStrictEqual(['3', '6'])
+  })
+
+  test('prog9', () => {
+    expect(compileAndInterpret(prog9, false)).toStrictEqual(['55'])
+  })
+
+  test('prog10', () => {
+    expect(compileAndInterpret(prog10, true)).toStrictEqual(['10'])
+  })
+
+  test('prog11', () => {
+    expect(compileAndInterpret(prog11, true)).toStrictEqual(['variant3, 8'])
+  })
+
+  
 })
 

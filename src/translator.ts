@@ -84,7 +84,7 @@ export function translateExp(e: S.Sexp): L.Exp {
         throw new Error(
           `Parse error: 'lambda' expects 3 arguments but ${args.length} were given`
         )
-      } else if (args[0].tag !== 'atom') {
+         } else if (args[0].tag !== 'atom') {
         throw new Error(
           `Parse error: 'lambda' expects its first argument to be an identifier but ${S.sexpToString(
             args[0]
