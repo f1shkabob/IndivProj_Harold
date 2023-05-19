@@ -53,7 +53,7 @@ export function translateTyp(e: S.Sexp): L.Typ {
           const variantType = translateTyp(variantTypeExp)
           variants.set(variantNameExp.value, variantType)
         }
-        return L.tyUnion(variants)
+        return L.tyunion(variants)
       }
     } else {
       throw new Error(`Parse error: unknown type '${S.sexpToString(e)}'`)
@@ -157,14 +157,14 @@ export function translateExp(e: S.Sexp): L.Exp {
             `Parse error: 'union' expects the name to be of type string but ${args[1]} was given`
           )
         } else {
-          const variantExp = translateExp(args[0])
-          if (variantExp.tag !== 'var') {
+          const variant = S.sexpToString(args[0])
+          if (variant.substring(0, 7) !== "variant") {
             throw new Error(
-              `Parse error: 'union' expects the variant name to be a variable but got ${variantExp.tag}`
-            );
+              `Parse error: 'union' expects the variant name to be a variable but got ${args[0].tag} which is from ${variant}
+              args[0] = ${S.sexpToString(args[0])} args[1] = ${args[1].value}`
+            )
           }
-          const variantName = L.evar(args[1].value) // necessary to get around annoying string type stuff
-          return L.union(variantExp.value, variantName)
+          return L.union(variant, translateExp(args[1]))
         }
       }
   }

@@ -62,36 +62,33 @@ export function typecheck (ctx: L.Ctx, e: L.Exp): L.Typ {
       return L.tyrec(recTypMap)
     }
     case 'field': {
-      const texp = typecheck(ctx, e.e);
+      const texp = typecheck(ctx, e.e)
       if (texp.tag === 'rec') {
         if (texp.values.has(e.field)) {
-          return texp.values.get(e.field)!;
+          return texp.values.get(e.field)!
         } else {
           throw new Error(`Type error: expected type for field ${e.field} but couldn't find one`);
         }
       } else if (texp.tag === 'union') {
-        const variantType = texp.variants.get(e.field);
+        const variantType = texp.variants.get(e.field)
         if (variantType) {
           return variantType;
         } else {
-          throw new Error(`Type error: expected type for variant ${e.field} but couldn't find one`);
+          throw new Error(`Type error: expected type for variant ${e.field} but couldn't find one`)
         }
       } else {
-        throw new Error(`Type error: expected record or union type but found ${texp.tag}`);
+        throw new Error(`Type error: expected record or union type but found ${texp.tag}`)
       }
     }
     case 'union': {
-      const texp = typecheck(ctx, e.e);
-      if (texp.tag === 'union') {
-        const variantType = texp.variants.get(e.variant);
-        if (variantType) {
-          return variantType;
-        } else {
-          throw new Error(`Type error: expected type for variant ${e.variant} but couldn't find one`);
-        }
-      } else {
-        throw new Error(`Type error: expected union type but found ${texp.tag}`);
-      }
+     let recTypMap = new Map<string, L.Typ>
+      return L.tyunion(recTypMap)
+      //   else {
+      //     throw new Error(`Type error: expected type for variant ${e.variant} but couldn't find one`)
+      //   }
+      //   else {
+      //   throw new Error(`Type error: expected union type but found ${texp.tag}`)
+      // }
     }
   }
 }

@@ -53,14 +53,16 @@ const prog5=
   (print (field r y))`
   
   const prog6 = 
-  `(define u (union variant1 balls))
-  (print (field u variant))
-  (print (field u exp))`
+  `(define dur
+    (union variant1 (10 + 10)))
+  (print dur))`
+
 
 const prog7 = 
-  `(define u (union variant2 true))
-  (print (field u variant))
-  (print (field u exp))`
+  `(define b
+    (union variant2 44))
+  (print b))`
+
 
 describe('testerinos', () => {
   test('prog1', () => {
@@ -83,12 +85,12 @@ describe('testerinos', () => {
   })
 
   test('prog6', () => {
-    expect(compileAndInterpret(prog6, true)).toStrictEqual(['variant1', '42'])
+    expect(compileAndInterpret(prog6, true)).toStrictEqual(['variant1', '20'])
   })
 
-  // test('prog7', () => {
-  //   expect(compileAndInterpret(prog7, true)).toStrictEqual(['variant2', 'true'])
-  // })
+  test('prog7', () => {
+    expect(compileAndInterpret(prog7, true)).toStrictEqual(['variant2', '44'])
+  })
 
 })
 

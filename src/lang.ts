@@ -30,7 +30,7 @@ export const tyfield = (e: TyRec, field: string): TyField => ({
   e,
   field,
 })
-export const tyUnion = (variants: Map<string, Typ>): TyUnion => ({
+export const tyunion = (variants: Map<string, Typ>): TyUnion => ({
     tag: 'union',
     variants,
   })
@@ -77,7 +77,7 @@ export const union = (variant: string, e: Exp): Union => ({
     e,
   })
 
-// TODO: add record literals here!
+// record literals
 export type Value = Num | Bool | Prim | Closure | RecVal | Field | UnionVal
 export type Prim = { tag: 'prim'; name: string; fn: (args: Value[]) => Value }
 export type Closure = { tag: 'closure'; param: string; body: Exp; env: Env }
@@ -233,7 +233,7 @@ export function prettyValue(v: Value): string {
     case 'field':
       return `<field <rec> ${v.field}>`  
     case 'unionVal':
-      return `<union ${v.variant} ${v.e}>`
+      return `${v.variant}, ${prettyValue(v.e)}`
   }
 }
 
@@ -290,17 +290,17 @@ export function typEquals(t1: Typ, t2: Typ): boolean {
       t1.inputs.length === t2.inputs.length &&
       t1.inputs.every((t, i) => typEquals(t, t2.inputs[i]))
     )
-    // TODO: add an equality case for record types here!
+    // equality case
   } else if (t1.tag === 'rec' && t2.tag === 'rec') {
     if (t1.values.size !== t2.values.size) {
-      return false;
+      return false
     }
     for (const [field, type] of t1.values.entries()) {
       if (!t2.values.has(field) || !typEquals(type, t2.values.get(field)!)) {
-        return false;
+        return false
       }
     }
-    return true;
+    return true
   }
    else {
     return false
